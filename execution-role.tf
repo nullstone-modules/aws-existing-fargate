@@ -21,3 +21,18 @@ resource "aws_iam_role_policy_attachment" "execution-managed" {
   role       = aws_iam_role.execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+// Create policy to pass the execution role to ECS
+resource "aws_iam_policy" "execution-pass-role" {
+  name_prefix = "execution-${local.resource_name}"
+  policy      = data.aws_iam_policy_document.deployer-execution.json
+}
+
+data "aws_iam_policy_document" "deployer-execution" {
+  statement {
+    sid       = "AllowPassRoleToECS"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = [aws_iam_role.execution.arn]
+  }
+}
