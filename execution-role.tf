@@ -22,6 +22,12 @@ resource "aws_iam_role_policy_attachment" "execution-managed" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+// App Mesh Envoy policy for accessing Virtual Node configuration
+resource "aws_iam_role_policy_attachment" "execution_envoy" {
+  role       = aws_iam_role.execution.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSAppMeshEnvoyAccess"
+}
+
 // Create policy to pass the execution role to ECS
 resource "aws_iam_policy" "execution-pass-role" {
   name_prefix = "execution-${local.resource_name}"
