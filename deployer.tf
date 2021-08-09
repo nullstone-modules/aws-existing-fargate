@@ -45,6 +45,16 @@ data "aws_iam_policy_document" "deployer" {
       values   = [data.aws_ecs_cluster.this.arn]
     }
   }
+
+  statement {
+    sid       = "AllowHealthMonitor"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "elasticloadbalancing:Describe*"
+    ]
+  }
 }
 
 // Allow deployer user to pass this role to AWS using iam:PassRole
