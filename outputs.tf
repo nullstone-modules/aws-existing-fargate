@@ -8,18 +8,6 @@ output "cluster_name" {
   description = "string ||| Name of the Fargate cluster."
 }
 
-output "deployer" {
-  value = {
-    name       = aws_iam_user.deployer.name
-    access_key = aws_iam_access_key.deployer.id
-    secret_key = aws_iam_access_key.deployer.secret
-  }
-
-  description = "object({ name: string, access_key: string, secret_key: string }) ||| An AWS User with explicit privilege to deploy ECS services."
-
-  sensitive = true
-}
-
 output "deployers_name" {
   value       = aws_iam_group.deployers.name
   description = "string ||| Name of the deployers IAM Group that is allowed to deploy to the Fargate cluster."
