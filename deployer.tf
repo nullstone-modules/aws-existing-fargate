@@ -1,6 +1,6 @@
 resource "aws_iam_user" "deployer" {
   name = "deployer-${local.resource_name}"
-  tags = data.ns_workspace.this.tags
+  tags = local.tags
 }
 
 resource "aws_iam_access_key" "deployer" {
@@ -12,53 +12,4 @@ resource "aws_iam_user_policy" "deployer" {
   name   = "AllowECSDeploy"
   user   = aws_iam_user.deployer.name
   policy = data.aws_iam_policy_document.deployer.json
-}
-
-data "aws_iam_policy_document" "deployer" {
-  statement {
-    sid    = "AllowEditTaskDefinitions"
-    effect = "Allow"
-
-    actions = [
-      "ecs:DescribeTaskDefinition",
-      "ecs:RegisterTaskDefinition",
-      "ecs:DeregisterTaskDefinition",
-    ]
-
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "AllowClusterUpdates"
-    effect = "Allow"
-
-    actions = [
-      "ecs:DescribeServices",
-      "ecs:UpdateService",
-    ]
-
-    resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "ecs:cluster"
-      values   = [data.aws_ecs_cluster.this.arn]
-    }
-  }
-
-  statement {
-    sid       = "AllowHealthMonitor"
-    effect    = "Allow"
-    resources = ["*"]
-
-    actions = [
-      "elasticloadbalancing:Describe*"
-    ]
-  }
-}
-
-// Allow deployer user to pass this role to AWS using iam:PassRole
-resource "aws_iam_user_policy_attachment" "deployer-execution" {
-  user       = aws_iam_user.deployer.name
-  policy_arn = aws_iam_policy.execution-pass-role.arn
 }
