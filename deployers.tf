@@ -1,6 +1,5 @@
 resource "aws_iam_group" "deployers" {
   name = "deployers-${local.resource_name}"
-  tags = local.tags
 }
 
 resource "aws_iam_group_policy" "deployers" {
