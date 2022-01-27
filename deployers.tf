@@ -29,6 +29,8 @@ data "aws_iam_policy_document" "deployer" {
     actions = [
       "ecs:DescribeServices",
       "ecs:UpdateService",
+      "ecs:*Tasks",
+      "ecs:ExecuteCommand",
     ]
 
     resources = ["*"]
