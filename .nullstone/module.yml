@@ -1,0 +1,13 @@
+org_name: nullstone
+name: aws-existing-fargate
+friendly_name: Existing Fargate Cluster
+description: A stub module that produces outputs to match a fargate cluster from an existing cluster.
+category: cluster
+subcategory: ""
+provider_types:
+    - aws
+platform: ecs
+subplatform: fargate
+type: ""
+appCategories: []
+is_public: true
